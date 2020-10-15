@@ -89,7 +89,7 @@ public class Cajas extends Application {
 		// label peso
 		weightoutcomel = new Label("Bajo Peso | Normal | Sobrepeso | Obeso");
 
-		// HBOX resultado 
+		// HBOX resultado del peso ideal
 		HBox weightoutcome = new HBox(weightoutcomel);
 		weightoutcome.setAlignment(Pos.BASELINE_CENTER);
 
@@ -105,12 +105,57 @@ public class Cajas extends Application {
 		primaryStage.setTitle("Calcular IMC");
 		primaryStage.show();
 
-		
+		// Leer mas sobre listenershttps://www.codejava.net/java-core/the-java-language/java-8-lambda-listener-example
+		weightText.textProperty().addListener(event -> {
+			
+			caracteristicas.setweight(Double.parseDouble(weightText.textProperty().get()));
+			
+			caracteristicas.setimc();
+		});
+
+		heightText.textProperty().addListener(event -> {
+			
+			caracteristicas.setheight(Double.parseDouble(heightText.textProperty().get()));
+			
+			caracteristicas.setimc();
+		});
+
+		caracteristicas.imcproperty().addListener(e -> {
+			/*binding label imcl2, asociando el resultado de la operacion para
+			obtener el IMC con esta*/
+			
+			imcl2.textProperty().bind(caracteristicas.imcproperty().asString());
+		});
+
+		imcl2.textProperty().addListener(e -> {
+			
+			if (caracteristicas.imcproperty().doubleValue() < 18.5)
+			
+				weightoutcomel.setText(Pesos.BAJOPESO.getString());
+			
+			else if (caracteristicas.imcproperty().doubleValue() >= 18.5
+			
+					&& caracteristicas.imcproperty().doubleValue() < 25.0)
+				
+				weightoutcomel.setText(Pesos.NORMAL.getString());
+			
+			else if (caracteristicas.imcproperty().doubleValue() >= 25.0
+			
+					&& caracteristicas.imcproperty().doubleValue() < 30.0)
+				
+				weightoutcomel.setText(Pesos.SOBREPESO.getString());
+			
+			else if (caracteristicas.imcproperty().doubleValue() > 30.0)
+			
+				weightoutcomel.setText(Pesos.OBESO.getString());
+		});
+
 	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 }
+
 
 
